@@ -1,0 +1,1 @@
+﻿Server=LAPTOP-LEU44NCC\SQLEXPRESS;Database=ParqueoEstudiantilBasico;Integrated Security=True;TrustServerCertificate=True;

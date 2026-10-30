@@ -1,0 +1,89 @@
+﻿PARQUEO - LISTO PARA EJECUTAR
+
+Servidor: LAPTOP-LEU44NCC\SQLEXPRESS
+Base de datos: ParqueoEstudiantilBasico
+Autenticación: Windows (sin usuario ni contraseña en la conexión).
+
+ABRIR EL PROGRAMA
+Ejecutar Programa/Parqueo.exe desde el paquete, o abrir Parqueo.slnx en
+Visual Studio y pulsar F5. Usar el usuario que ya registró en el sistema.
+El programa no incluye una pantalla para configurar la conexión.
+
+TECNOLOGÍA
+C#, Windows Forms, .NET 10, SQL Server y Entity Framework Core.
+Entidades/Modelos.cs: clases de los objetos.
+Datos/ParqueoContext.cs: contexto de Entity Framework.
+Negocio/: consultas LINQ, validaciones y operaciones con Add/Remove/SaveChanges.
+Presentacion/: controles y diseño de los formularios.
+
+INSTALACIÓN DE LA BASE EN OTRO EQUIPO
+Crear una base vacía llamada ParqueoEstudiantilBasico. Ejecutar primero
+BaseDatos/01_CrearBase.sql y después BaseDatos/02_InsertarDatos.sql.
+No repetir los scripts sobre una base que ya tiene tablas o datos.
+Los archivos contienen tablas, llaves primarias y foráneas, e INSERT separados.
+Las validaciones, el cálculo del cobro y la bitácora están en C#.
+No se usan procedimientos almacenados, vistas, triggers ni RLS.
+No hay migraciones ni creación automática del esquema desde EF.
+
+USO
+Registrar ingreso: placa, vehículo, tipo de espacio y modalidad opcional.
+Se asigna un espacio y se emite un ticket.
+En Vehículos dentro, seleccionar la fila y pulsar Registrar salida.
+Confirmar el estimado y consultar el comprobante en pantalla.
+La hora del equipo determina los tiempos.
+Las tarifas e impuestos se conservan en cada ticket al ingresar.
+Una mensualidad se cobra una sola vez por convenio y mes calendario.
+
+MEJORAS EN OPERACIÓN (SIN CAMBIOS DE BASE)
+Espacios: filtrar por zona, tipo y estado. Elegir Todas las zonas, Todos los tipos y Todos los estados muestra todos.
+Los contadores superiores siempre muestran el total del parqueo.
+Vehículos dentro: buscar por placa parcial o número de ticket. También puede
+usar # seguido del ticket, por ejemplo #000007. Borrar el texto de búsqueda muestra todos.
+El tiempo transcurrido y el estimado se actualizan cada 15 segundos.
+El monto definitivo se calcula al confirmar la salida. El estimado de una
+mensualidad puede cambiar si otro vehículo del mismo convenio paga la cuota.
+Historial por placa: escribir la placa completa y pulsar Buscar.
+Se muestran visitas cerradas y abiertas; Pagado contiene únicamente cobros reales.
+Resumen del día: ingresados hoy, atendidos hoy, vehículos dentro e ingresos cobrados.
+Vehículos dentro incluye los que ingresaron en días anteriores.
+No se necesita ejecutar scripts, modificar tablas ni cambiar la contraseña.
+
+CATÁLOGOS
+Nuevo, Editar y Eliminar trabajan con entidades de EF.
+Para eventos o convenios: crear la tarifa, crear la modalidad con fechas y
+asignar una fila de Reservas por cada espacio. Elegir convenio O evento.
+Regular identifica la tarifa pública; las tarifas especiales no llevan Regular.
+
+REQUISITOS
+.NET Desktop Runtime 10 para ejecutar, o SDK 10 para compilar.
+SQL Server disponible y permisos de Windows sobre la base.
+Compilación: dotnet build Parqueo.csproj
+El paquete NuGet principal es Microsoft.EntityFrameworkCore.SqlServer 8.0.11.
+
+VALIDACIÓN
+La versión con EF pasó 54 comprobaciones, incluyendo cierre de sesión y creación de los cinco formularios sin SQL. En esta preparación se verificó
+la conexión real con EF al servidor indicado y se compiló sin errores.
+
+CONSULTA VISUAL
+Los reportes se muestran en tablas, sin exportación a archivos ni impresión.
+Los identificadores internos se ocultan; las relaciones muestran sus nombres.
+Cerrar sesión vuelve a la pantalla de acceso y limpia los permisos anteriores.
+
+DISEÑADORES EDITABLES
+Form1.cs, Form1.Operacion.cs, LoginForm.cs, IngresoForm.cs, EditorForm.cs y TicketForm.cs tienen
+sus archivos .Designer.cs y .resx. Abrir el archivo .cs y pulsar Mayús + F7.
+Form1.Operacion.cs es el UserControl Form1Operaciones y tiene diseñador propio.
+Login se abre desde Presentacion/LoginForm.cs.
+Si la solución ya estaba abierta, cerrarla y abrir Parqueo.slnx nuevamente.
+Si una pestaña de diseño ya estaba abierta, cerrarla y abrirla de nuevo.
+Los controles visuales se editan desde Propiedades y el diseñador.
+En EditorForm se muestran únicamente los campos del catálogo seleccionado.
+Nuevo y Eliminar son las acciones de los catálogos. Doble clic permite editar.
+En Empresa se utiliza Editar empresa. En vehículos e historial, doble clic abre
+el ticket. Las consultas se actualizan automáticamente cada 15 segundos.
+
+DOCUMENTACIÓN
+La guía vigente es docs/Documentacion_Parqueo.docx.
+La interfaz conserva algunos mensajes fijos en C#. Pendiente externo del grupo:
+repositorio público, commits reales y tablero Trello/Monday con responsables.
+
