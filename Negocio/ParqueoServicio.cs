@@ -23,6 +23,7 @@ public static class ParqueoServicio
     public static int Ingresar(string placa,int vehiculo,int tipo,int? convenio,int? evento)
     {
         Seguridad.Exigir("Operación",true);placa=placa.Trim().ToUpperInvariant();if(placa.Length<3 || placa.Length>15)throw new Exception("La placa debe tener entre 3 y 15 caracteres.");if(convenio!=null && evento!=null)throw new Exception("Seleccione convenio o evento, no ambos.");
+        if (!System.Text.RegularExpressions.Regex.IsMatch(placa, @"^[A-Z0-9]+$")) throw new Exception("La placa solo puede contener letras de la A a la Z y números del 0 al 9.");
         using var db=new ParqueoContext();using var transaccion=db.Database.BeginTransaction(IsolationLevel.Serializable);DateTime ahora=DateTime.Now;
         if(db.Tickets.Any(t=>t.Placa==placa && t.Salida==null))throw new Exception("El vehículo ya está dentro.");
         if(!db.TiposVehiculo.Any(v=>v.Id==vehiculo))throw new Exception("El tipo de vehículo no existe.");
