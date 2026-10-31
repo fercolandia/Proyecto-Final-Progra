@@ -26,6 +26,23 @@ public static class ParqueoServicio
         using var db=new ParqueoContext();using var transaccion=db.Database.BeginTransaction(IsolationLevel.Serializable);DateTime ahora=DateTime.Now;
         if(db.Tickets.Any(t=>t.Placa==placa && t.Salida==null))throw new Exception("El vehículo ya está dentro.");
         if(!db.TiposVehiculo.Any(v=>v.Id==vehiculo))throw new Exception("El tipo de vehículo no existe.");
+        var nombreVehiculo = db.TiposVehiculo
+        .Where(v => v.Id == vehiculo)
+        .Select(v => v.Nombre)
+        .Single();
+        var nombreEspacio = db.TiposEspacio
+        .Where(e => e.Id == tipo)
+        .Select(e => e.Nombre)
+        .Single();
+        bool compatible =
+            (nombreVehiculo == "Automóvil" &&
+                (nombreEspacio == "Normal" || nombreEspacio == "Discapacitados" || nombreEspacio == "VIP")) ||
+            (nombreVehiculo == "Camioneta" &&
+                (nombreEspacio == "Normal" || nombreEspacio == "Discapacitados" || nombreEspacio == "VIP")) ||
+            (nombreVehiculo == "Motocicleta" &&
+                (nombreEspacio == "Motocicleta" || nombreEspacio == "VIP"));
+        if (!compatible)
+            throw new Exception("El espacio seleccionado no es compatible con el tipo de vehículo.");
         var convenios=db.Convenios.ToList();var eventos=db.Eventos.ToList();Tarifa? tarifa;
         if(convenio!=null){var c=convenios.Single(x=>x.Id==convenio);if(!Vigente(c.Inicio,c.Fin,c.Activo,ahora))throw new Exception("El convenio no está vigente.");tarifa=db.Tarifas.Find(c.TarifaId);}
         else if(evento!=null){var e=eventos.Single(x=>x.Id==evento);if(!Vigente(e.Inicio,e.Fin,e.Activo,ahora))throw new Exception("El evento no está vigente.");tarifa=db.Tarifas.Find(e.TarifaId);}
